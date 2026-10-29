@@ -1,50 +1,59 @@
-# Welcome to your Expo app 👋
+# BeforeAfter
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+An Expo/React Native app for creating side-by-side before-and-after photo records. Camera records include a capture time and GPS coordinates; gallery images can also be paired, tagged, saved, and shared.
 
-## Get started
+## Requirements
 
-1. Install dependencies
+- Node.js 20 or newer
+- npm
+- An iOS/Android development build for native sharing
 
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Setup
 
 ```bash
-npm run reset-project
+npm install
+npm start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Other development commands:
 
-## Learn more
+```bash
+npm run android
+npm run ios
+npm run web
+npm run lint
+npm run typecheck
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+Camera capture requires foreground location access. On native platforms, photos
+are copied into app-owned document storage; the web build stores imported
+images in IndexedDB. Deleting a record also removes its stored image data.
+**Save & Delete** writes composed cards to the device photo library on native
+or downloads them in the browser before removing the records.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Project structure
 
-## Join the community
+```text
+src/
+  components/   Reusable UI and work-card presentation
+  context/      App-wide preference context
+  hooks/        Preference and persisted-card state
+  navigation/   Drawer navigation configuration
+  screens/      Setup, settings, credits, and work workflows
+  services/     Image acquisition, files, storage, and sharing
+  types.ts      Shared domain and navigation types
+  utils/        Date and ID helpers
+```
 
-Join our community of developers creating universal apps.
+`WorkCardsScreen` contains the shared card workflow. `CameraScreen` and
+`GalleryScreen` only provide their acquisition strategy, keeping selection,
+tagging, sharing, deletion, and persistence behavior consistent.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Verification
+
+```bash
+npm run lint
+npm run typecheck
+npx expo-doctor
+npx expo export --platform all
+```
